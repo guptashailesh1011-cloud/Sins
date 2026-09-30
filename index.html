@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shailesh Gupta — Digital Identity</title>
+<meta name="description" content="Shailesh Gupta — BCA student, aspiring software developer and cybersecurity enthusiast.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+ --bg:#07090f;--panel:rgba(15,19,31,.68);--line:rgba(255,255,255,.12);
+ --text:#f5f7fb;--muted:#a4adbf;--cyan:#76f7d0;--blue:#78a9ff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;background:
+ radial-gradient(circle at 80% 15%,rgba(69,125,255,.16),transparent 28%),
+ radial-gradient(circle at 15% 80%,rgba(53,255,191,.08),transparent 25%);
+ pointer-events:none;z-index:-2}
+#canvas{position:fixed;inset:0;z-index:-1;opacity:.45}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1180px,90%);margin:auto}
+nav{position:fixed;top:0;left:0;right:0;height:78px;z-index:20;background:rgba(7,9,15,.58);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+.nav{height:100%;display:flex;align-items:center;justify-content:space-between}
+.brand{font:700 24px "Space Grotesk";letter-spacing:-1px}.brand b{color:var(--cyan)}
+.navlinks{display:flex;gap:28px;font-size:13px;color:var(--muted)}.navlinks a:hover{color:var(--cyan)}
+.menu{display:none;color:var(--cyan);font-size:25px}
+.hero{min-height:100vh;padding-top:120px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:35px;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(118,247,208,.25);padding:9px 13px;border-radius:99px;color:var(--cyan);font-size:11px;letter-spacing:1.7px;font-weight:700;margin-bottom:25px;background:rgba(118,247,208,.05)}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 5px rgba(118,247,208,.1),0 0 15px var(--cyan)}
+h1{font:700 clamp(50px,7vw,92px)/.94 "Space Grotesk";letter-spacing:-5px;max-width:650px}
+.grad{background:linear-gradient(110deg,var(--cyan),var(--blue));-webkit-background-clip:text;color:transparent}
+.lead{max-width:570px;color:var(--muted);font-size:16px;line-height:1.9;margin:27px 0}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);padding:13px 18px;border-radius:10px;font-size:12px;font-weight:700;transition:.3s;cursor:pointer;background:rgba(255,255,255,.04)}
+.btn.primary{background:linear-gradient(110deg,var(--cyan),var(--blue));color:#071016;border:0}
+.btn:hover{transform:translateY(-4px);box-shadow:0 15px 35px rgba(0,0,0,.25)}
+.visual{height:650px;position:relative;display:flex;align-items:center;justify-content:center;perspective:1000px}
+.ring{position:absolute;width:470px;height:470px;border:1px solid rgba(118,247,208,.22);border-radius:50%;animation:spin 18s linear infinite}
+.ring:after{content:"";position:absolute;width:10px;height:10px;background:var(--cyan);border-radius:50%;top:35px;left:65px;box-shadow:0 0 25px var(--cyan)}
+.ring.two{width:560px;height:560px;border-color:rgba(120,169,255,.12);animation-direction:reverse;animation-duration:25s}
+.photo{width:370px;height:510px;border-radius:28px;overflow:hidden;position:relative;transform:rotate(3deg);border:1px solid rgba(255,255,255,.2);box-shadow:0 35px 90px rgba(0,0,0,.55);transition:transform .2s;z-index:2}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.15) contrast(1.05)}
+.photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.6))}
+.photo-label{position:absolute;bottom:22px;left:22px;z-index:3;font-size:11px;letter-spacing:2px;color:#fff}
+.float{position:absolute;padding:13px 16px;border:1px solid var(--line);background:rgba(13,18,29,.78);backdrop-filter:blur(15px);border-radius:12px;font-size:11px;color:var(--muted);z-index:4;box-shadow:0 15px 35px rgba(0,0,0,.25)}
+.float strong{display:block;color:var(--text);font-size:14px;margin-top:4px}.f1{top:100px;right:0}.f2{bottom:105px;left:0}
+section{padding:115px 0}.section-tag{font-size:11px;letter-spacing:3px;color:var(--cyan);font-weight:700;margin-bottom:14px}.title{font:600 clamp(34px,4vw,56px)/1.05 "Space Grotesk";letter-spacing:-2px;margin-bottom:40px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:30px;backdrop-filter:blur(16px);transition:.3s}.card:hover{transform:translateY(-7px);border-color:rgba(118,247,208,.35)}
+.card h3{font:600 22px "Space Grotesk";margin-bottom:13px}.card p{color:var(--muted);font-size:14px;line-height:1.9}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}.stat{padding:22px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.025)}.stat b{font:700 28px "Space Grotesk";color:var(--cyan);display:block}.stat span{font-size:11px;color:var(--muted)}
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.skill{padding:23px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025)}.skill .icon{font-size:25px;margin-bottom:14px}.skill h3{font-size:15px;margin-bottom:7px}.skill p{font-size:12px;color:var(--muted);line-height:1.7}
+.timeline{border-left:1px solid rgba(118,247,208,.3);margin-left:8px}.event{padding:0 0 35px 30px;position:relative}.event:before{content:"";position:absolute;left:-6px;top:3px;width:11px;height:11px;border-radius:50%;background:var(--cyan);box-shadow:0 0 18px var(--cyan)}.event small{color:var(--cyan);font-size:11px;font-weight:700}.event h3{font:600 21px "Space Grotesk";margin:7px 0}.event p{font-size:14px;color:var(--muted)}
+.contact{display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:stretch}.qrbox{text-align:center}.qrbox #qrcode{background:#fff;padding:12px;width:max-content;margin:20px auto;border-radius:10px}.qrbox p{font-size:11px;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:12px}.foot{display:flex;justify-content:space-between;gap:20px}
+.reveal{opacity:0;transform:translateY(28px);transition:.8s}.reveal.show{opacity:1;transform:none}
+@keyframes spin{to{transform:rotate(360deg)}} 
+@media(max-width:850px){.hero{grid-template-columns:1fr;padding-top:125px}.visual{height:570px}.photo{width:300px;height:430px}.ring{width:390px;height:390px}.ring.two{width:450px;height:450px}.navlinks{display:none}.menu{display:block}.grid2,.contact{grid-template-columns:1fr}.skills{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){h1{font-size:53px;letter-spacing:-3px}.visual{height:500px}.photo{width:245px;height:360px}.ring{width:310px;height:310px}.ring.two{width:370px;height:370px}.f1{right:-5px;top:40px}.f2{left:-5px;bottom:45px}.skills{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.foot{flex-direction:column}}
+
+#introScreen{
+ position:fixed;inset:0;z-index:9999;background:#000;display:flex;
+ align-items:center;justify-content:center;overflow:hidden;cursor:pointer;
+ transition:opacity .9s ease,visibility .9s ease;
+}
+#introScreen.hide{opacity:0;visibility:hidden;pointer-events:none}
+#introScreen img{position:absolute;width:100%;height:100%;object-fit:cover;filter:contrast(1.15) brightness(.72);transform:scale(1.02)}
+#introScreen:after{content:"";position:absolute;inset:0;background:
+ linear-gradient(90deg,rgba(0,0,0,.25),rgba(0,0,0,.05),rgba(0,0,0,.45)),
+ repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0px,rgba(255,255,255,.025) 1px,transparent 1px,transparent 4px);
+ pointer-events:none}
+.intro-content{position:relative;z-index:2;text-align:center;margin-top:42vh}
+.intro-kicker{font:700 11px "Space Grotesk";letter-spacing:5px;color:#76f7d0;text-shadow:0 0 18px #76f7d0;margin-bottom:18px}
+.intro-btn{font:700 12px Inter,sans-serif;letter-spacing:2px;color:#fff;border:1px solid rgba(118,247,208,.65);background:rgba(0,0,0,.48);padding:14px 22px;border-radius:4px;box-shadow:0 0 25px rgba(118,247,208,.12);animation:blink 1.7s infinite}
+.intro-warning{font-size:10px;color:#aaa;margin-top:12px;letter-spacing:1px}
+@keyframes blink{50%{box-shadow:0 0 35px rgba(118,247,208,.35)}}
+.glitch{animation:glitch 2.2s infinite}
+@keyframes glitch{0%,88%,100%{transform:translate(0)}90%{transform:translate(-2px,1px)}92%{transform:translate(2px,-1px)}}
+
+</style>
+</head>
+<body>
+
+<div id="introScreen" role="button" aria-label="Enter portfolio">
+  <img src="intro.jpg" alt="Cybersecurity themed intro">
+  <div class="intro-content">
+    <div class="intro-kicker glitch">SECURE CONNECTION ESTABLISHED</div>
+    <button class="intro-btn">[ ENTER DIGITAL PROFILE ]</button>
+    <div class="intro-warning">Educational portfolio interface • Click to continue</div>
+  </div>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<nav><div class="wrap nav">
+<a class="brand" href="#">SG<b>.</b></a>
+<div class="navlinks"><a href="#about">About</a><a href="#education">Education</a><a href="#skills">Skills</a><a href="#contact">Contact</a></div>
+<div class="menu">☰</div>
+</div></nav>
+
+<main class="wrap">
+<section class="hero">
+<div class="reveal">
+<div class="eyebrow"><span class="pulse"></span> DIGITAL PROFILE / 2026</div>
+<h1>Building my<br><span class="grad">next chapter.</span></h1>
+<p class="lead">I'm <b>Shailesh Gupta</b> — a BCA first-year student exploring software development, cybersecurity and the technology behind meaningful digital products.</p>
+<div class="actions"><a class="btn primary" href="#about">Enter my world ↗</a><a class="btn" href="#contact">Connect with me</a></div>
+</div>
+<div class="visual reveal" id="visual">
+<div class="ring"></div><div class="ring two"></div>
+<div class="float f1">CURRENT STATUS<strong>Learning in public</strong></div>
+<div class="float f2">FOCUS<strong>Code · Security · Growth</strong></div>
+<div class="photo" id="photo"><img src="hero.jpg" alt="Shailesh visual profile"><div class="photo-label">SHAILesh / DIGITAL IDENTITY</div></div>
+</div>
+</section>
+
+<section id="about" class="reveal">
+<div class="section-tag">01 — PROFILE</div><h2 class="title">Curious mind.<br>Technical direction.</h2>
+<div class="grid2"><div class="card"><h3>Who I am</h3><p>I am Shailesh Gupta, currently pursuing Bachelor of Computer Applications, first year and first semester. I enjoy understanding systems, learning technology from fundamentals and turning ideas into practical digital experiences.</p></div><div class="card"><h3>What drives me</h3><p>My interests are software development and cybersecurity. I believe consistent learning, strong fundamentals, problem solving and hands-on practice are more valuable than simply collecting titles.</p></div></div>
+<div class="stats"><div class="stat"><b>77.80%</b><span>Class 12 · Mathematics</span></div><div class="stat"><b>87.66%</b><span>Class 10</span></div><div class="stat"><b>BCA</b><span>First Year · Semester 1</span></div></div>
+</section>
+
+<section id="education" class="reveal"><div class="section-tag">02 — JOURNEY</div><h2 class="title">Where I am<br>right now.</h2>
+<div class="timeline"><div class="event"><small>2026 — PRESENT</small><h3>Bachelor of Computer Applications</h3><p>Kirodimal Science & Arts College, Raigarh · First Year · First Semester</p></div><div class="event"><small>2025 — 2026</small><h3>Higher Secondary Education</h3><p>Mathematics stream · 77.80%</p></div><div class="event"><small>2023 — 2024</small><h3>Secondary Education</h3><p>Class 10th · 87.66%</p></div></div>
+</section>
+
+<section id="skills" class="reveal"><div class="section-tag">03 — DIRECTION</div><h2 class="title">Currently<br>under construction.</h2>
+<div class="skills"><div class="skill"><div class="icon">⌘</div><h3>Programming</h3><p>Building logic, syntax knowledge and problem-solving fundamentals.</p></div><div class="skill"><div class="icon">◈</div><h3>Web Development</h3><p>Exploring HTML, CSS, JavaScript and interactive interfaces.</p></div><div class="skill"><div class="icon">▦</div><h3>DBMS & SQL</h3><p>Learning data organization, databases and query concepts.</p></div><div class="skill"><div class="icon">◉</div><h3>Computer Science</h3><p>Computer fundamentals, operating systems and networking basics.</p></div><div class="skill"><div class="icon">⌁</div><h3>Cybersecurity</h3><p>Exploring ethical security, networking and system protection concepts.</p></div><div class="skill"><div class="icon">✦</div><h3>Continuous Growth</h3><p>Daily learning, English improvement, chess and analytical thinking.</p></div></div>
+</section>
+
+<section id="contact" class="reveal"><div class="section-tag">04 — CONNECT</div><h2 class="title">Let's make<br>something useful.</h2>
+<div class="contact"><div class="card"><h3>Shailesh Gupta</h3><p> BCA Student · Aspiring Software Developer · Cybersecurity Enthusiast</p><br><p>Phone: <b style="color:var(--cyan)">+91 9039243942</b></p><br><div class="actions"><a class="btn primary" href="tel:+919039243942">Call me</a><button class="btn" onclick="copyPhone()">Copy number</button></div></div><div class="card qrbox"><h3>Scan to connect</h3><div id="qrcode"></div><p>Scan this QR code to open the contact number.</p></div></div>
+</section>
+</main>
+
+<footer><div class="wrap foot"><span>© 2026 Shailesh Gupta</span><span>Designed as a living digital identity.</span></div></footer>
+
+<script>
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(x=>obs.observe(x));
+
+new QRCode(document.getElementById("qrcode"),{text:"tel:+919039243942",width:170,height:170,colorDark:"#071016",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
+
+function copyPhone(){navigator.clipboard.writeText("+919039243942");alert("Phone number copied");}
+
+const c=document.getElementById("canvas"),ctx=c.getContext("2d");let pts=[];
+function resize(){c.width=innerWidth;c.height=innerHeight;pts=Array.from({length:55},()=>({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35}))}
+function draw(){ctx.clearRect(0,0,c.width,c.height);for(let p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;ctx.fillStyle="rgba(118,247,208,.7)";ctx.fillRect(p.x,p.y,1.5,1.5)}for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){let a=pts[i],b=pts[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<125){ctx.strokeStyle=`rgba(118,247,208,${.12*(1-d/125)})`;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}requestAnimationFrame(draw)}
+resize();addEventListener('resize',resize);draw();
+
+const visual=document.getElementById('visual'),photo=document.getElementById('photo');
+visual.addEventListener('mousemove',e=>{let r=visual.getBoundingClientRect();let x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;photo.style.transform=`rotate(3deg) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateY(-5px)`});
+visual.addEventListener('mouseleave',()=>photo.style.transform='rotate(3deg)');
+
+const intro=document.getElementById('introScreen');
+function enterPortfolio(){intro.classList.add('hide');setTimeout(()=>intro.remove(),950);}
+intro.addEventListener('click',enterPortfolio);
+setTimeout(enterPortfolio,7000);
+
+</script>
+</body>
+</html>
